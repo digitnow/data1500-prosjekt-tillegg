@@ -22,7 +22,15 @@ KONTOER      }o--o| MVA_KODER : "bruker"
 POSTERINGER  }o--|| KONTOER   : "berører"
 LOT          }o--|| KONTOER   : "tilhører"
 ```
+LOT trenger dere ikke å ta med, siden den brukes ikke i scenarioer. 
 
+## Oppgave 1: 
+
+- Skal kommentarer og ytelsesindekser implementeres, dvs. legges inn i skjema?
+  - Ja
+- I DEL A er ikke tabellen `Lot` nevnt, men i spesifikasjonen i "5.3 Transaksjoner og posteringer" er tabellen spesifisert, samt en fremmednøkkel er spesifisert mot `Lot` i tabellen `Posteringer`. 
+  - Dere kan la være å implementere `Lot`. Dere kan da også droppe attributte `lot_guid 	CHAR(32) 	Fremmednøkkel til Lot (for verdipapirer).` i `Posteringer`.
+ 
 ## Oppgave 3: Grunnleggende SQL spørringer mot dobbelt bokholderi
 
 Rettelser av feil:
