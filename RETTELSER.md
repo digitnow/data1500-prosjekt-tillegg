@@ -22,25 +22,27 @@ KONTOER      }o--o| MVA_KODER : "bruker"
 POSTERINGER  }o--|| KONTOER   : "berører"
 LOT          }o--|| KONTOER   : "tilhører"
 ```
-LOT trenger dere ikke å ta med, siden den brukes ikke i scenarioer. 
+LOT trenger dere ikke å ta med, siden den var utelatt fra Oppgave 1 DEL A. Se kommentarer i avsnitt `Oppgave 1` under.
 
-## Oppgave 1: 
+## 6. Prosjektoppgaver (NS 4102)
+
+### Oppgave 1: Implementasjon av datamodellen, mermaid-diagrammet og normalform
 
 - Skal kommentarer og ytelsesindekser implementeres, dvs. legges inn i skjema?
   - Ja
 - I DEL A er ikke tabellen `Lot` nevnt, men i spesifikasjonen i "5.3 Transaksjoner og posteringer" er tabellen spesifisert, samt en fremmednøkkel er spesifisert mot `Lot` i tabellen `Posteringer`. 
-  - Dere kan la være å implementere `Lot`. Dere kan da også droppe attributte `lot_guid 	CHAR(32) 	Fremmednøkkel til Lot (for verdipapirer).` i `Posteringer`.
+  - Dere kan la være å implementere `Lot`. Dere kan da også droppe attributtet `lot_guid` i `Posteringer`.
  
-## Oppgave 3: Grunnleggende SQL spørringer mot dobbelt bokholderi
+### Oppgave 3: Grunnleggende SQL spørringer mot dobbelt bokholderi
 
 Rettelser av feil:
 - Del B: Aggregeringer med GROUP BY: `B.1:B.4` skal erstattes med `B.1`
 
-## Oppgave 5: Ytelsesanalyse med `EXPLAIN ANALYZE` og `MATERIALIZED VIEW`
+### Oppgave 5: Ytelsesanalyse med `EXPLAIN ANALYZE` og `MATERIALIZED VIEW`
 
 Initialiseringsskriptet for de nødvendige entitetene er lagt til i mappen `oppgave5`.
 
-## Oppgave 9: Samtidighetsproblemer og Låsing (K10.7, K10.8, K10.9, K10.10, K10.11)
+### Oppgave 9: Samtidighetsproblemer og Låsing (K10.7, K10.8, K10.9, K10.10, K10.11)
 
 Rettelser av feil:
 - I kommentarene i startkoden var det spesifisert en scenario, som potensielt kan føre til inkonsistent datagrunnlag: 
@@ -61,7 +63,7 @@ Tid  Tråd A (Ane)                    Tråd B (Bjørn)
 
 ``` 
 
-Den korrekt versjonen er: 
+Den korrekte versjonen er: 
 
 ```
 RACE CONDITION-MØNSTERET (Les-Beregn-Skriv):
