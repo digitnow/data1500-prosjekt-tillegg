@@ -1,5 +1,32 @@
 # Rettelser til DATA1500 Prosjekt
 
+## 4. Brukerscenarioer (NS 4102)
+
+### Scenario 7: Innbetaling av MVA til staten (avregning)
+
+**Hendelse:** Bedriften sender inn MVA-oppgave for 1. termin og betaler netto MVA til Skatteetaten. Utgående MVA er 12 500 kr (fra Scenario 3), inngående MVA er 875 kr (fra Scenario 2). Netto å betale: 11 625 kr.
+
+| Kontonr | Kontonavn | Kontoklasse | Debet | Kredit |
+|---|---|---|---|---|
+| 2700 | Utgående MVA, høy sats | 2 — Egenkapital og gjeld | 12 500 kr | — |
+| 2710 | Inngående MVA, høy sats | 2 — Egenkapital og gjeld | — | 875 kr |
+| 2740 | Oppgjørskonto MVA | 2 — Egenkapital og gjeld | — | 11 625 kr |
+| 1920 | Bankinnskudd | 1 — Eiendeler | — | 11 625 kr |
+
+**Forklaring:** MVA-gjelden nulles ut. Netto MVA-beløp betales fra bankkontoen. Dette scenariet demonstrerer verdien av `Regnskapsperioder`-tabellen: perioden for 1. termin kan nå låses (`LAAST`) for å forhindre etterpostering.
+
+---
+
+**Studentene har lagt merke til inkonsistens i spesifikasjonen. Håper dette oppklarer forvirring.**
+
+Tabellen ovenfor viser den faglig fullstendige varianten med 2740 Oppgjørskonto MVA, som krever to separate transaksjoner for å balansere:
+- Transaksjon A (avregning): Debet 2700, Kredit 2710 og 2740 — nullstiller MVA-kontoene og registrerer skyldig netto MVA på oppgjørskontoen.
+- Transaksjon B (betaling): Debet 2740, Kredit 1920 — betaler det skyldige beløpet fra bankkontoen.
+
+Hvis du ønsker å bokføre dette som én enkelt transaksjon, skal konto 2740 utelates helt: Debet 2700 (12 500), Kredit 2710 (875) og Kredit 1920 (11 625). Begge varianter er regnskapsmessig korrekte.
+
+---
+
 ## 5. Datamodellen — Entiteter og Attributter
 
 `KONTO` skal være `KONTOER` (følger samme skjema for navngiving av entiteter, - substantiver i flertall) alle steder i mermaid-koden:
