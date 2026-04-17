@@ -25,6 +25,13 @@ Tabellen ovenfor viser den faglig fullstendige varianten med 2740 Oppgjørskonto
 
 Hvis du ønsker å bokføre dette som én enkelt transaksjon, skal konto 2740 utelates helt: Debet 2700 (12 500), Kredit 2710 (875) og Kredit 1920 (11 625). Begge varianter er regnskapsmessig korrekte.
 
+| Spørsmål                                            | Svar                                                                         |
+| --------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Er regnskapet i ubalanse mellom Transaksjon A og B? | **Nei** — 2740 representerer en legitim gjeld, regnskapet balanserer         |
+| Kan de slås til én transaksjon?                     | **Ja** — men da uten 2740, og man mister tidsskillet                         |
+| Hva er 2740 sin rolle?                              | En mellomkonto som viser at forpliktelsen eksisterer men ikke er betalt ennå |
+| Når er tosplittingen viktig?                        | Når avregning og betaling faller i ulike regnskapsperioder                   |
+
 ---
 
 ## 5. Datamodellen — Entiteter og Attributter
