@@ -2,6 +2,28 @@
 
 ## 4. Brukerscenarioer (NS 4102)
 
+### Scenario 6: Kjøp av utenlandsk verdipapir (flervaluta)
+
+**Hendelse:** Bedriften kjøper 10 aksjer i Apple Inc. (AAPL) for 175 USD per aksje. Valutakursen er 10,50 NOK/USD. Handelen koster totalt 1 750 USD = 18 375 NOK.
+
+| Kontonr | Kontonavn | Kontoklasse | Debet | Kredit |
+|---|---|---|---|---|
+| 1350 | Aksjer i utenlandske selskaper | 1 — Eiendeler | 18 375 kr | — |
+| 1920 | Bankinnskudd | 1 — Eiendeler | — | 18 375 kr |
+
+**Forklaring:** Dette er en sammensatt flervalutatransaksjon. Posteringen på konto 1350 har `antall_teller = 10` (antall AAPL-aksjer) og `belop_teller = 175000` / `belop_nevner = 100` (1 750 USD). Posteringen på konto 1920 har `belop_teller = 1837500` / `belop_nevner = 100` (18 375 NOK). `Valutakurser`-tabellen inneholder kursen 10,50 NOK/USD for denne datoen. Et `Lot` opprettes for å spore kostprisen for fremtidig gevinstberegning (FIFO).
+
+---
+**Studentene har lagt merke til inkonsistens i spesifikasjonen. Håper dette oppklarer forvirring.**
+
+Den korrekte forklaringen skal være:
+
+Dette er en sammensatt flervalutatransaksjon. Posteringen på konto 1350 har `antall_teller = 10` (antall AAPL-aksjer) og `belop_teller = 1837500` / `belop_nevner = 100` (18 375 NOK). Posteringen på konto 1920 har `belop_teller = 1837500` / `belop_nevner = 100` (18 375 NOK). `Valutakurser`-tabellen inneholder kursen 10,50 NOK/USD for denne datoen. Et `Lot` opprettes for å spore kostprisen for fremtidig gevinstberegning (FIFO).
+
+Transkasjon skal foregå i den valutaen som spesifisert i feltet `valuta_guid` `Transaksjoner`. Antall aksjer kjøpt spesifiseres i feltet `antall_teller` i `Posteringer.` I hvilken valuta ble aksjene kjøpt, skal lagres i feltet `valuta_guid` i `Kontoer` for kontoen 1350. `Lot` trenger man ikke ta hensyn til siden den ikke var spesifisert i Oppgave 1.
+
+---
+
 ### Scenario 7: Innbetaling av MVA til staten (avregning)
 
 **Hendelse:** Bedriften sender inn MVA-oppgave for 1. termin og betaler netto MVA til Skatteetaten. Utgående MVA er 12 500 kr (fra Scenario 3), inngående MVA er 875 kr (fra Scenario 2). Netto å betale: 11 625 kr.
