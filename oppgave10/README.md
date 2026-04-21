@@ -1,6 +1,24 @@
-# Oppgave 10A: Valutakurs-Cache med Redis
+# Oppgave 10: Sanntids Valutakurs-Cache med Redis
 
-**NS 4102 Regnskapssystem** — Docker Compose Stack
+**Mål:** OBS! Dette er endret fra den opprinnelige oppgaveteksten.
+
+Eksperimentere med en effektiv cache-mekanisme for å redusere antall kall mot et eksternt API. Oppnå en forståelse av hvordan NoSQL-systemer og relasjonsdatabasesystemer kan brukes sammen for å implementere en stabil tjeneste. 
+
+**Teknologi:** **Redis** (Key-Value Store)
+
+Tjenesten har følgende cache-logikk:
+
+1.  En unik nøkkel for valutaparet, f.eks. `price:USD:NOK`.
+2.  Nøkkelen finnes i Redis (sjekk med `GET price:USD:NOK`).
+    -   **Cache Hit:** Returner den lagrede verdien umiddelbart uten å kalle API-et.
+    -   **Cache Miss:** Kaller det eksterne API-et (**Norges Bank API**), lagrer resultatet i Redis med en TTL på 1 time (`SET price:USD:NOK 9.65 EX 3600`), og oppdaterer `prices`-tabellen i SQL-databasen **innenfor en transaksjon**.
+
+**TTL** - `time to live` eller `hop limit` er en mekanisme som begrenser *livstid* til data i en datamaskin eller i et nettverk.
+
+**Diskuter i rapporten:**
+- Utfør skriptet `demo.py` som simulerer 10 påfølgende kall for samme valutapar og logger om hvert kall resulterte i Cache Hit eller Cache Miss. Forklar resultatet!
+- Finn ut hva som lagres i PostgreSQL (vis gjerne med spørringer) og forklar!
+- Hva er konsekvensen for datakonsistens dersom Redis-cachen inneholder en foreldet kurs og en bruker registrerer en transaksjon basert på den? Hvordan kan dette håndteres?
 
 ## Arkitektur
 
