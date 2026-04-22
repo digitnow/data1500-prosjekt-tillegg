@@ -286,7 +286,7 @@ def kjor_to_tradder(funksjon_a, args_a, funksjon_b, args_b):
     t1.join();  t2.join()
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Hovedprogram (skal implementeres av studenten(-e))
+# Hovedprogram (skal IKKE implementeres av studenten(-e))
 # ─────────────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
@@ -297,4 +297,101 @@ if __name__ == "__main__":
     print(f"  Forsinkelse LES→SKRIV: {FORSINKELSE}s  |  "
           f"Ane: +{BELOP_ANE/100:,.0f} kr  |  Bjørn: +{BELOP_BJORN/100:,.0f} kr\n")
 
-# Skriv din kode her
+    rydd_test()
+    kontekst   = hent_kontekst()
+    konto_guid = hent_konto_guid(KONTONUMMER)
+    STARTSALDO = 24850000   # 248 500 kr i øre
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # SCENARIO A1: INSERT-basert — usikker (viser INGEN tapt oppdatering)
+    # ══════════════════════════════════════════════════════════════════════════
+    print("═"*62)
+    print("  SCENARIO A: INSERT-basert modell (GnuCash/NS 4102)")
+    print("  Begge tråder leser samme saldo, men skriver uavhengige INSERT-rader.")
+    print("  Resultat: INGEN tapt oppdatering — INSERT er immunt by design.")
+    print("─"*62)
+    saldo_for = hent_saldo_insert(konto_guid)
+    forventet = saldo_for + BELOP_ANE + BELOP_BJORN
+    print(f"  Saldo FØR: {saldo_for/100:,.0f} kr  |  Forventet: {forventet/100:,.0f} kr")
+    print("─"*62)
+
+    res_a = {}
+    bar_a = threading.Barrier(2)
+    kjor_to_tradder(
+        insert_innbetaling, ("Ane",   BELOP_ANE,   konto_guid, kontekst, bar_a, res_a),
+        insert_innbetaling, ("Bjørn", BELOP_BJORN, konto_guid, kontekst, bar_a, res_a)
+    )
+    saldo_etter_a = hent_saldo_insert(konto_guid)
+    avvik_a = saldo_etter_a - forventet
+    print("─"*62)
+    print(f"  Saldo ETTER: {saldo_etter_a/100:,.0f} kr  |  Forventet: {forventet/100:,.0f} kr  |  "
+          + ("⚠️  TAPT!" if avvik_a else "✓ Korrekt"))
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # SCENARIO B1: UPDATE-basert — USIKKER (demonstrerer EKTE tapt oppdatering)
+    # ══════════════════════════════════════════════════════════════════════════
+    print("\n" + "═"*62)
+    print("  SCENARIO B1: UPDATE-basert — USIKKER (anti-mønster)")
+    print("  Begge tråder leser SAMME saldo, beregner ny verdi og")
+    print("  overskriver hverandre med UPDATE. Den siste vinner.")
+    print("─"*62)
+    setup_update_tabell(STARTSALDO)
+    forventet_b = STARTSALDO + BELOP_ANE + BELOP_BJORN
+    print(f"  Saldo FØR: {STARTSALDO/100:,.0f} kr  |  Forventet: {forventet_b/100:,.0f} kr")
+    print("─"*62)
+
+    res_b1 = {}
+    bar_b1 = threading.Barrier(2)
+    kjor_to_tradder(
+        usikker_update, ("Ane",   BELOP_ANE,   bar_b1, res_b1),
+        usikker_update, ("Bjørn", BELOP_BJORN, bar_b1, res_b1)
+    )
+    saldo_etter_b1 = hent_saldo_update()
+    avvik_b1 = saldo_etter_b1 - forventet_b
+    print("─"*62)
+    print(f"  Saldo ETTER: {saldo_etter_b1/100:,.0f} kr  |  Forventet: {forventet_b/100:,.0f} kr  |  "
+          + (f"⚠️  TAPT OPPDATERING: {abs(avvik_b1)/100:,.0f} kr gikk tapt!" if avvik_b1 else "✓ Korrekt"))
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # SCENARIO B2: UPDATE-basert — SIKKER med SELECT FOR UPDATE
+    # ══════════════════════════════════════════════════════════════════════════
+    print("\n" + "═"*62)
+    print("  SCENARIO B2: UPDATE-basert — SIKKER (SELECT FOR UPDATE)")
+    print("  Den første tråden låser raden. Den andre venter til låsen frigis.")
+    print("  Ingen Barrier nødvendig — låsen er synkroniseringsmekanismen.")
+    print("─"*62)
+    setup_update_tabell(STARTSALDO)
+    print(f"  Saldo FØR: {STARTSALDO/100:,.0f} kr  |  Forventet: {forventet_b/100:,.0f} kr")
+    print("─"*62)
+
+    res_b2 = {}
+    # Ingen Barrier — trådene starter samtidig, men låsen serialiserer dem
+    kjor_to_tradder(
+        sikker_update_for_update, ("Ane",   BELOP_ANE,   None, res_b2),
+        sikker_update_for_update, ("Bjørn", BELOP_BJORN, None, res_b2)
+    )
+    saldo_etter_b2 = hent_saldo_update()
+    avvik_b2 = saldo_etter_b2 - forventet_b
+    print("─"*62)
+    print(f"  Saldo ETTER: {saldo_etter_b2/100:,.0f} kr  |  Forventet: {forventet_b/100:,.0f} kr  |  "
+          + (f"⚠️  TAPT: {abs(avvik_b2)/100:,.0f} kr" if avvik_b2 else "✓ Korrekt"))
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # SAMMENDRAG
+    # ══════════════════════════════════════════════════════════════════════════
+    print("\n" + "═"*62)
+    print("  SAMMENDRAG")
+    print("─"*62)
+    print(f"  {'Scenario':<48} {'Avvik':>10}")
+    print(f"  {'─'*48} {'─'*10}")
+    for tittel, avvik in [
+        ("A:  INSERT-basert (GnuCash/NS 4102) — ingen låsing", avvik_a),
+        ("B1: UPDATE-basert — USIKKER (les-beregn-skriv)",     avvik_b1),
+        ("B2: UPDATE-basert — SIKKER  (SELECT FOR UPDATE)",    avvik_b2),
+    ]:
+        status = f"{avvik/100:+,.0f} kr" if avvik else "0 kr ✓"
+        print(f"  {tittel:<48} {status:>10}")
+    print("═"*62)
+    print()
+
+    rydd_test()
