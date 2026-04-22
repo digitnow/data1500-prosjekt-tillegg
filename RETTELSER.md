@@ -110,7 +110,7 @@ Ta utgangspunkt i Python programmet i filen ´startkode/oppgave9.py´ hvor funks
 #### Oppdatert oppgavetekst (2026-04-22)
 
 Et fullstendig Python-kode for problemet som er beskrevet er gitt i mappen `oppgave9`. 
-- Utfør koden og beskriv med dine egne ord hva koden gjør. Verifiser output. 
+- Utfør koden og verifiser output, som spesifisert i den opprinnelige oppgaveteksten.
 
 Ta med i rapporten:
 - Hvordan simuleres samtidighet i Python-koden?
