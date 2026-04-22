@@ -100,6 +100,24 @@ Initialiseringsskriptet for de nødvendige entitetene er lagt til i mappen `oppg
 
 ### Oppgave 9: Samtidighetsproblemer og Låsing (K10.7, K10.8, K10.9, K10.10, K10.11)
 
+**OBS! Endring fra den opprinnelige oppgaveteksten**
+
+#### Opprinnelig oppgavetekst
+Bruk Python programmeringsspråk for å simulerer "samtidighet", dvs. at Ane og Bjørn kobler seg til databasen med to separate Psycopg2-koblinger (hvor Psycopg2 er en mye brukt adapter for Python programmeringsspråket; https://www.psycopg.org/), som da utføres i to separate *tråder* i Python (`threading` modulen). 
+
+Ta utgangspunkt i Python programmet i filen ´startkode/oppgave9.py´ hvor funksjoner for alle operasjoner mot databasen og samtidighet som simulerer den usikre *les-beregn-skriv*-syklusen er implementert. Dette skal gjennomgås på forelesninger.
+
+#### Oppdatert oppgavetekst (2026-04-22)
+
+Et fullstendig Python-kode for problemet som er beskrevet er gitt i mappen `oppgave9`. 
+- Utfør koden og beskriv med dine egne ord hva koden gjør. Verifiser output. 
+
+Ta med i rapporten:
+- Hvordan simuleres samtidighet i Python-koden?
+- Hvordan er transaksjoner implementert i Python-koden? 
+- Hvorfor er en implementasjon basert på en modell med en saldo mer sårbar for brudd på ACID enn en implementasjon basert på debet/kredit og `belop_teller` og `belop_nevner`? 
+
+
 Rettelser av feil:
 - I kommentarene i startkoden var det spesifisert en scenario, som potensielt kan føre til inkonsistent datagrunnlag: 
 
