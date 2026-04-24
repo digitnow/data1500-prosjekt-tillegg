@@ -2,6 +2,14 @@
 
 ## 4. Brukerscenarioer (NS 4102)
 
+### Scenario 3: Fakturering av en kunde (med utgående MVA)
+
+Dere kan se bort fra denne kommentaren som viser til tabellene `Fakturaer` og `Fakturalinjer`:
+
+> NS 4102-kobling: Konto 1500 tilhører klasse 1, konto 3100 tilhører klasse 3, konto 2700 tilhører klasse 2. Dette scenariet involverer Fakturaer- og Fakturalinjer-tabellene i tillegg til kjerne-transaksjonene.
+
+**Dere trenger ikke å opprettete disse tabellene for å besvare Oppgave 2.**
+
 ### Scenario 6: Kjøp av utenlandsk verdipapir (flervaluta)
 
 **Hendelse:** Bedriften kjøper 10 aksjer i Apple Inc. (AAPL) for 175 USD per aksje. Valutakursen er 10,50 NOK/USD. Handelen koster totalt 1 750 USD = 18 375 NOK.
