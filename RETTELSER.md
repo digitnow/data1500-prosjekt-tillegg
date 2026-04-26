@@ -159,5 +159,5 @@ Tid  Tråd A (Ane)                    Tråd B (Bjørn)
  6   SKRIV: INSERT postering +3 000
  7                                   SKRIV: INSERT postering +1 500
  8   COMMIT → saldo = 251 500
- 9                                   COMMIT → saldo = 251 500
+ 9                                   COMMIT → saldo = 253 000 (**rettet 2026-04-26**)
 ``` 
